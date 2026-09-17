@@ -1,0 +1,28 @@
+<%- include('../layouts/header') %>
+
+<section class="hero row align-items-center gy-4">
+  <div class="col-lg-7">
+    <p class="eyebrow">Banque privée numérique</p>
+    <h1>Comptes, virements, cartes — un espace unique.</h1>
+    <p class="lead">
+      Hosbank est une application bancaire pédagogique en architecture N-tiers :
+      sessions, vérification e-mail, rôles client / conseiller / admin.
+    </p>
+    <div class="d-flex flex-wrap gap-3 mt-4">
+      <a class="btn btn-gold btn-lg" href="/register">Devenir client</a>
+      <a class="btn btn-outline-gold btn-lg" href="/login">Accéder à mes comptes</a>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <article class="ledger-card">
+      <h2>Espaces</h2>
+      <ul>
+        <li>Client : comptes, bénéficiaires, cartes, demandes</li>
+        <li>Conseiller : suivi, demandes, réclamations</li>
+        <li>Admin : utilisateurs, comptes, rôles</li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<%- include('../layouts/footer') %>

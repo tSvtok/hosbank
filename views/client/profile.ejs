@@ -1,0 +1,38 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Mes informations</h1>
+<article class="form-card">
+  <form action="/client/profile" method="post">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="firstName">Prénom</label>
+        <input class="form-control" id="firstName" name="firstName" value="<%= user.firstName %>" required />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="lastName">Nom</label>
+        <input class="form-control" id="lastName" name="lastName" value="<%= user.lastName %>" required />
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">E-mail</label>
+      <input class="form-control" value="<%= user.email %>" disabled />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="phone">Téléphone</label>
+      <input class="form-control" id="phone" name="phone" value="<%= user.phone || '' %>" />
+    </div>
+    <hr />
+    <p class="text-muted">Changement de mot de passe (optionnel)</p>
+    <div class="mb-3">
+      <label class="form-label" for="currentPassword">Mot de passe actuel</label>
+      <input class="form-control" id="currentPassword" name="currentPassword" type="password" />
+    </div>
+    <div class="mb-4">
+      <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+      <input class="form-control" id="newPassword" name="newPassword" type="password" minlength="8" />
+    </div>
+    <button class="btn btn-gold" type="submit">Enregistrer</button>
+  </form>
+</article>
+
+<%- include('../layouts/footer') %>

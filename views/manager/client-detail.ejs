@@ -1,0 +1,126 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-2"><%= person.first_name %> <%= person.last_name %></h1>
+<p class="text-muted"><%= person.email %> · <%= person.phone || 'pas de téléphone' %> · <%= person.status %></p>
+
+<div class="row g-4 mt-1">
+  <% if (!accounts.length) { %>
+    <div class="col-12"><p class="text-muted">Aucun compte.</p></div>
+  <% } %>
+  <% accounts.forEach(function (account) { %>
+    <div class="col-md-6">
+      <article class="table-panel">
+        <p class="eyebrow"><%= accountTypeLabel[account.type] || account.type %></p>
+        <p class="h4"><%= formatMoney(account.balance, account.currency) %></p>
+        <p class="mb-0">RIB <%= formatRib(account.rib) %> · <%= account.account_number %> · <%= account.status %></p>
+      </article>
+    </div>
+  <% }) %>
+</div>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Cartes</h2>
+  <% if (!cards.length) { %>
+    <p class="text-muted mb-0">Aucune carte.</p>
+  <% } else { %>
+    <% cards.forEach(function (card) { %>
+      <p class="mb-1"><%= card.masked %> · <%= card.status %> · <%= card.is_virtual ? 'virtuelle' : 'physique' %></p>
+    <% }) %>
+  <% } %>
+</section>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Demandes</h2>
+  <% if (!requests.length) { %>
+    <p class="text-muted mb-0">Aucune demande.</p>
+  <% } else { %>
+    <% requests.forEach(function (item) { %>
+      <p class="mb-1">
+        <%= requestTypeLabel[item.type] || item.type %> · <%= item.status %>
+        <% if (item.response) { %> — <%= item.response %><% } %>
+      </p>
+    <% }) %>
+  <% } %>
+</section>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Réclamations</h2>
+  <% if (!complaints.length) { %>
+    <p class="text-muted mb-0">Aucune réclamation.</p>
+  <% } else { %>
+    <% complaints.forEach(function (item) { %>
+      <p class="mb-1"><%= item.subject %> · <%= item.status %><% if (item.response) { %> — <%= item.response %><% } %></p>
+    <% }) %>
+  <% } %>
+</section>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Opérations</h2>
+  <% if (!transfers.length) { %>
+    <p class="text-muted mb-0">Aucune opération.</p>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Libellé</th>
+            <th>Montant</th>
+            <th>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transfers.forEach(function (item) { %>
+            <tr>
+              <td><%= new Date(item.created_at).toLocaleString('fr-FR') %></td>
+              <td><%= item.label || item.type %></td>
+              <td><%= formatMoney(item.amount) %></td>
+              <td><%= item.status %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<div class="row g-4 mt-1">
+  <div class="col-lg-5">
+    <article class="form-card">
+      <h2 class="h4">Réponse / commentaire</h2>
+      <form action="/manager/clients/<%= person.id %>/interactions" method="post">
+        <div class="mb-3">
+          <label class="form-label" for="type">Type</label>
+          <select class="form-select" id="type" name="type">
+            <option value="note">Note</option>
+            <option value="call">Appel</option>
+            <option value="meeting">Rendez-vous</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="content">Contenu visible dans l’historique</label>
+          <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit">Enregistrer</button>
+      </form>
+    </article>
+  </div>
+  <div class="col-lg-7">
+    <section class="table-panel">
+      <h2 class="h4">Historique des interactions</h2>
+      <% if (!interactions.length) { %>
+        <p class="text-muted mb-0">Aucune interaction.</p>
+      <% } else { %>
+        <% interactions.forEach(function (item) { %>
+          <article class="mb-3">
+            <strong><%= item.type %></strong>
+            <span class="text-muted"> · <%= new Date(item.created_at).toLocaleString('fr-FR') %></span>
+            <p class="mb-0"><%= item.content %></p>
+          </article>
+        <% }) %>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

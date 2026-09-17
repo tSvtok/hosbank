@@ -1,0 +1,63 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4"><%= person ? 'Modifier un utilisateur' : 'Créer un utilisateur' %></h1>
+<article class="form-card">
+  <form action="<%= person ? '/admin/users/' + person.id : '/admin/users' %>" method="post">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="firstName">Prénom</label>
+        <input class="form-control" id="firstName" name="firstName" value="<%= person ? person.firstName : '' %>" required />
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label" for="lastName">Nom</label>
+        <input class="form-control" id="lastName" name="lastName" value="<%= person ? person.lastName : '' %>" required />
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="email">E-mail</label>
+      <input class="form-control" id="email" name="email" type="email" value="<%= person ? person.email : '' %>" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="phone">Téléphone</label>
+      <input class="form-control" id="phone" name="phone" value="<%= person && person.phone ? person.phone : '' %>" />
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="roleName">Rôle</label>
+      <select class="form-select" id="roleName" name="roleName" required>
+        <% roles.forEach(function (role) { %>
+          <option value="<%= role.name %>" <%= person && person.roleName === role.name ? 'selected' : '' %>>
+            <%= role.label %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="managerId">Chargé client (si client)</label>
+      <select class="form-select" id="managerId" name="managerId">
+        <option value="">—</option>
+        <% managers.forEach(function (manager) { %>
+          <option value="<%= manager.id %>" <%= person && person.managerId === manager.id ? 'selected' : '' %>>
+            <%= manager.first_name %> <%= manager.last_name %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+    <% if (person) { %>
+      <div class="mb-3">
+        <label class="form-label" for="status">Statut</label>
+        <select class="form-select" id="status" name="status">
+          <option value="active" <%= person.status === 'active' ? 'selected' : '' %>>actif</option>
+          <option value="suspended" <%= person.status === 'suspended' ? 'selected' : '' %>>désactivé</option>
+        </select>
+      </div>
+    <% } %>
+    <div class="mb-4">
+      <label class="form-label" for="password">Mot de passe <%= person ? '(laisser vide pour conserver)' : '' %></label>
+      <input class="form-control" id="password" name="password" type="password" <%= person ? '' : 'required minlength="8"' %> />
+    </div>
+    <button class="btn btn-gold" type="submit">Enregistrer</button>
+    <a class="btn btn-outline-gold" href="/admin/users">Annuler</a>
+  </form>
+</article>
+
+<%- include('../layouts/footer') %>

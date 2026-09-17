@@ -1,0 +1,1 @@
+-- Rôles et permissions : voir schema.sql (INSERT ... ON DUPLICATE KEY)

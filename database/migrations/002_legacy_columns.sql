@@ -1,0 +1,2 @@
+-- 002 — colonnes métier (RIB, conseiller, type de compte)
+-- Appliquées par src/config/database.js (migrateLegacy) pour les volumes existants.

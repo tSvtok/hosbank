@@ -1,0 +1,61 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Bénéficiaires</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <article class="form-card">
+      <h2 class="h4">Ajouter</h2>
+      <form action="/beneficiaries" method="post">
+        <div class="mb-3">
+          <label class="form-label" for="label">Libellé</label>
+          <input class="form-control" id="label" name="label" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="holderName">Titulaire</label>
+          <input class="form-control" id="holderName" name="holderName" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="rib">RIB / IBAN</label>
+          <input class="form-control" id="rib" name="rib" required />
+        </div>
+        <button class="btn btn-gold" type="submit">Enregistrer</button>
+      </form>
+    </article>
+  </div>
+  <div class="col-lg-7">
+    <section class="table-panel">
+      <% if (!beneficiaries.length) { %>
+        <p class="text-muted mb-0">Aucun bénéficiaire.</p>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Libellé</th>
+                <th>Titulaire</th>
+                <th>RIB</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% beneficiaries.forEach(function (item) { %>
+                <tr>
+                  <td><%= item.label %></td>
+                  <td><%= item.holder_name %></td>
+                  <td><%= formatRib(item.rib) %></td>
+                  <td>
+                    <form action="/beneficiaries/<%= item.id %>/delete" method="post">
+                      <button class="btn btn-sm btn-outline-gold" type="submit">Supprimer</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

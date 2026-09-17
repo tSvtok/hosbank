@@ -1,0 +1,34 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Toutes les réclamations</h1>
+<section class="table-panel">
+  <% if (!complaints.length) { %>
+    <p class="text-muted mb-0">Aucune réclamation.</p>
+  <% } else { %>
+    <% complaints.forEach(function (item) { %>
+      <article class="mb-4">
+        <h2 class="h5 mb-1"><%= item.subject %></h2>
+        <p class="text-muted mb-1"><%= item.first_name %> <%= item.last_name %> · <%= item.status %></p>
+        <p><%= item.message %></p>
+        <% if (item.response) { %><p><em>Réponse : <%= item.response %></em></p><% } %>
+        <form action="/admin/complaints/<%= item.id %>" method="post" class="row g-2 align-items-end">
+          <div class="col-md-4">
+            <select class="form-select" name="status">
+              <option value="open" <%= item.status === 'open' ? 'selected' : '' %>>Ouverte</option>
+              <option value="in_progress" <%= item.status === 'in_progress' ? 'selected' : '' %>>En cours</option>
+              <option value="closed" <%= item.status === 'closed' ? 'selected' : '' %>>Clôturée</option>
+            </select>
+          </div>
+          <div class="col-md-5">
+            <input class="form-control" name="response" placeholder="Réponse au client" value="<%= item.response || '' %>" />
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-gold" type="submit">Mettre à jour</button>
+          </div>
+        </form>
+      </article>
+    <% }) %>
+  <% } %>
+</section>
+
+<%- include('../layouts/footer') %>

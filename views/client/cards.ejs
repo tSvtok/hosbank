@@ -1,0 +1,34 @@
+<%- include('../layouts/header') %>
+
+<div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+  <h1 class="mb-0">Cartes virtuelles</h1>
+  <form action="/cards/virtual" method="post">
+    <button class="btn btn-gold" type="submit">Demander une carte virtuelle</button>
+  </form>
+</div>
+<div class="row g-4">
+  <% if (!cards.length) { %>
+    <p class="text-muted">Aucune carte. Déposez une demande pour en obtenir une.</p>
+  <% } %>
+  <% cards.forEach(function (card) { %>
+    <div class="col-md-6">
+      <article class="balance-card">
+        <p class="account-number"><%= card.is_virtual ? 'virtuelle' : 'physique' %> · <%= card.brand %></p>
+        <p class="balance"><%= card.masked %></p>
+        <p class="status"><%= card.expiry_month %>/<%= card.expiry_year %> · <%= card.status %></p>
+        <% if (card.status === 'active') { %>
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <form action="/cards/<%= card.id %>/opposition" method="post">
+              <button class="btn btn-outline-gold" type="submit">Faire opposition</button>
+            </form>
+            <form action="/cards/<%= card.id %>/pin" method="post">
+              <button class="btn btn-outline-gold" type="submit">Renouveler le PIN</button>
+            </form>
+          </div>
+        <% } %>
+      </article>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('../layouts/footer') %>

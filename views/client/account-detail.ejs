@@ -1,0 +1,41 @@
+<%- include('../layouts/header') %>
+
+<p class="eyebrow"><%= accountTypeLabel[account.type] || account.type %></p>
+<h1 class="mb-3"><%= formatMoney(account.balance, account.currency) %></h1>
+<p>RIB <%= formatRib(account.rib) %></p>
+<p class="text-muted">N° <%= account.account_number %> · <%= account.status %></p>
+<p>
+  <a class="btn btn-gold" href="/accounts/<%= account.id %>/rib">Consulter / demander le RIB</a>
+</p>
+
+<section class="table-panel mt-4">
+  <h2>Opérations</h2>
+  <% if (!transfers.length) { %>
+    <p class="text-muted mb-0">Aucune opération.</p>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Libellé</th>
+            <th class="text-end">Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transfers.forEach(function (tx) { %>
+            <tr>
+              <td><%= new Date(tx.created_at).toLocaleString('fr-FR') %></td>
+              <td><%= tx.type %></td>
+              <td><%= tx.label || '—' %></td>
+              <td class="text-end"><%= formatMoney(tx.amount) %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../layouts/footer') %>

@@ -1,0 +1,54 @@
+<%- include('../layouts/header') %>
+
+<div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-4">
+  <div>
+    <p class="eyebrow mb-1">Bonjour <%= user.firstName %></p>
+    <h1>Espace client</h1>
+  </div>
+  <a class="btn btn-gold" href="/transfers">Nouveau virement</a>
+</div>
+
+<div class="row g-4 mb-4">
+  <% accounts.forEach(function (account) { %>
+    <div class="col-md-6">
+      <a class="text-decoration-none" href="/accounts/<%= account.id %>">
+        <article class="balance-card">
+          <p class="account-number"><%= accountTypeLabel[account.type] || account.type %></p>
+          <p class="balance"><%= formatMoney(account.balance, account.currency) %></p>
+          <p class="status"><%= formatRib(account.rib) %></p>
+        </article>
+      </a>
+    </div>
+  <% }) %>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-6">
+    <section class="table-panel">
+      <h2>Cartes</h2>
+      <% if (!cards.length) { %>
+        <p class="text-muted mb-0">Aucune carte.</p>
+      <% } else { %>
+        <% cards.forEach(function (card) { %>
+          <p class="mb-2"><%= card.masked %> · <%= card.status %></p>
+        <% }) %>
+      <% } %>
+    </section>
+  </div>
+  <div class="col-lg-6">
+    <section class="table-panel">
+      <h2>Dernières opérations</h2>
+      <% if (!transfers.length) { %>
+        <p class="text-muted mb-0">Aucune opération.</p>
+      <% } else { %>
+        <ul class="list-unstyled mb-0">
+          <% transfers.slice(0, 5).forEach(function (tx) { %>
+            <li class="mb-2"><%= tx.type %> · <%= formatMoney(tx.amount) %></li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

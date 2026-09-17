@@ -1,0 +1,75 @@
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-hosbank}
+      MYSQL_USER: ${DB_USER:-hosbank}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-hosbank}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootsecret}
+      TZ: Europe/Paris
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 25s
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
+    command: sh -c "npm install && node --watch src/app.js"
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 3000
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      SESSION_SECRET: ${SESSION_SECRET:-change-me-in-production}
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-hosbank}
+      DB_USER: ${DB_USER:-hosbank}
+      DB_PASSWORD: ${DB_PASSWORD:-hosbank}
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_FROM: ${MAIL_FROM:-Hosbank <noreply@hosbank.local>}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@hosbank.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-Admin123!}
+      MANAGER_EMAIL: ${MANAGER_EMAIL:-manager@hosbank.local}
+      MANAGER_PASSWORD: ${MANAGER_PASSWORD:-Manager123!}
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  mysql_data:
+  app_node_modules:

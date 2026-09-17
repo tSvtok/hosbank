@@ -1,0 +1,114 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Administration</h1>
+<div class="row g-4 mb-4">
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Clients</p><p class="h2 mb-0"><%= stats.clients || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Chargés</p><p class="h2 mb-0"><%= stats.managers || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Comptes</p><p class="h2 mb-0"><%= stats.total_accounts || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Encours</p><p class="h2 mb-0"><%= formatMoney(stats.total_balance || 0) %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Virements</p><p class="h2 mb-0"><%= stats.total_transfers || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Volume</p><p class="h2 mb-0"><%= formatMoney(stats.transfer_volume || 0) %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Demandes en attente</p><p class="h2 mb-0"><%= stats.pending_requests || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Réclamations ouvertes</p><p class="h2 mb-0"><%= stats.open_complaints || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Cartes actives</p><p class="h2 mb-0"><%= stats.active_cards || 0 %></p></article></div>
+  <div class="col-md-3"><article class="table-panel"><p class="eyebrow">Cartes bloquées</p><p class="h2 mb-0"><%= stats.blocked_cards || 0 %></p></article></div>
+</div>
+<p class="d-flex flex-wrap gap-2">
+  <a class="btn btn-gold" href="/admin/users">Utilisateurs</a>
+  <a class="btn btn-outline-gold" href="/admin/cards">Cartes</a>
+  <a class="btn btn-outline-gold" href="/admin/transfers">Opérations</a>
+  <a class="btn btn-outline-gold" href="/admin/requests">Demandes</a>
+  <a class="btn btn-outline-gold" href="/admin/complaints">Réclamations</a>
+  <a class="btn btn-outline-gold" href="/admin/managers">Chargés clients</a>
+</p>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Ouvrir un compte</h2>
+  <form action="/admin/accounts" method="post" class="row g-2 align-items-end">
+    <div class="col-md-5">
+      <label class="form-label" for="userId">Client</label>
+      <select class="form-select" id="userId" name="userId" required>
+        <% clients.forEach(function (item) { %>
+          <option value="<%= item.id %>"><%= item.first_name %> <%= item.last_name %> — <%= item.email %></option>
+        <% }) %>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <label class="form-label" for="type">Type</label>
+      <select class="form-select" id="type" name="type">
+        <option value="checking">Compte courant</option>
+        <option value="savings">Livret d’épargne</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button class="btn btn-gold" type="submit">Créer</button>
+    </div>
+  </form>
+</section>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Comptes bancaires</h2>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>RIB</th>
+          <th>Solde</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% accounts.forEach(function (account) { %>
+          <tr>
+            <td><%= account.first_name %> <%= account.last_name %></td>
+            <td><%= formatRib(account.rib) %></td>
+            <td><%= formatMoney(account.balance, account.currency) %></td>
+            <td><%= account.status %></td>
+            <td>
+              <form action="/admin/accounts/<%= account.id %>/status" method="post" class="d-flex gap-2">
+                <select class="form-select form-select-sm" name="status">
+                  <option value="active" <%= account.status === 'active' ? 'selected' : '' %>>actif</option>
+                  <option value="frozen" <%= account.status === 'frozen' ? 'selected' : '' %>>gelé</option>
+                  <option value="closed" <%= account.status === 'closed' ? 'selected' : '' %>>clôturé</option>
+                </select>
+                <button class="btn btn-sm btn-outline-gold" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="table-panel mt-4">
+  <h2 class="h4">Supervision des chargés</h2>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Chargé</th>
+          <th>Clients</th>
+          <th>Demandes en attente</th>
+          <th>Demandes traitées</th>
+          <th>Réclamations ouvertes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% managers.forEach(function (item) { %>
+          <tr>
+            <td><%= item.first_name %> <%= item.last_name %></td>
+            <td><%= item.client_count %></td>
+            <td><%= item.pending_requests %></td>
+            <td><%= item.handled_requests %></td>
+            <td><%= item.open_complaints %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('../layouts/footer') %>

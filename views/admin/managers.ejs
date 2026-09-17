@@ -1,0 +1,35 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Supervision des chargés clients</h1>
+<section class="table-panel">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Chargé</th>
+          <th>E-mail</th>
+          <th>Clients affectés</th>
+          <th>Demandes en attente</th>
+          <th>Demandes traitées</th>
+          <th>Réclamations ouvertes</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% managers.forEach(function (item) { %>
+          <tr>
+            <td><%= item.first_name %> <%= item.last_name %></td>
+            <td><%= item.email %></td>
+            <td><%= item.client_count %></td>
+            <td><%= item.pending_requests %></td>
+            <td><%= item.handled_requests %></td>
+            <td><%= item.open_complaints %></td>
+            <td><%= item.status %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('../layouts/footer') %>

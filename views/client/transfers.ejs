@@ -1,0 +1,74 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Virements</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <article class="form-card">
+      <h2 class="h4">Nouveau virement</h2>
+      <% if (!beneficiaries.length) { %>
+        <p class="text-muted mb-0">Ajoutez d’abord un <a href="/beneficiaries">bénéficiaire</a>.</p>
+      <% } else { %>
+        <form action="/transfers" method="post">
+          <div class="mb-3">
+            <label class="form-label" for="fromAccountId">Compte source</label>
+            <select class="form-select" id="fromAccountId" name="fromAccountId" required>
+              <% accounts.forEach(function (account) { %>
+                <option value="<%= account.id %>">
+                  <%= account.account_number %> — <%= formatMoney(account.balance, account.currency) %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="beneficiaryId">Bénéficiaire</label>
+            <select class="form-select" id="beneficiaryId" name="beneficiaryId" required>
+              <% beneficiaries.forEach(function (item) { %>
+                <option value="<%= item.id %>"><%= item.label %> — <%= formatRib(item.rib) %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="amount">Montant (€)</label>
+            <input class="form-control" id="amount" name="amount" type="number" min="0.01" step="0.01" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="label">Libellé</label>
+            <input class="form-control" id="label" name="label" maxlength="255" />
+          </div>
+          <button class="btn btn-gold" type="submit">Valider</button>
+        </form>
+      <% } %>
+    </article>
+  </div>
+  <div class="col-lg-7">
+    <section class="table-panel">
+      <h2 class="h4">Historique</h2>
+      <% if (!transfers.length) { %>
+        <p class="text-muted mb-0">Aucun virement.</p>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th class="text-end">Montant</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% transfers.forEach(function (tx) { %>
+                <tr>
+                  <td><%= new Date(tx.created_at).toLocaleString('fr-FR') %></td>
+                  <td><%= tx.label || tx.type %></td>
+                  <td class="text-end"><%= formatMoney(tx.amount) %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

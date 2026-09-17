@@ -1,0 +1,49 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/">Hosbank</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNav"
+      aria-controls="mainNav"
+      aria-expanded="false"
+      aria-label="Menu"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+        <% if (user) { %>
+          <% if (user.roleName === 'client') { %>
+            <li class="nav-item"><a class="nav-link" href="/client">Tableau de bord</a></li>
+            <li class="nav-item"><a class="nav-link" href="/accounts">Comptes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/transfers">Virements</a></li>
+            <li class="nav-item"><a class="nav-link" href="/beneficiaries">Bénéficiaires</a></li>
+            <li class="nav-item"><a class="nav-link" href="/cards">Cartes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/requests">Demandes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/complaints">Réclamations</a></li>
+            <li class="nav-item"><a class="nav-link" href="/client/profile">Profil</a></li>
+          <% } %>
+          <% if (user.roleName === 'manager' || user.roleName === 'admin') { %>
+            <li class="nav-item"><a class="nav-link" href="/manager">Conseiller</a></li>
+            <li class="nav-item"><a class="nav-link" href="/manager/requests">Demandes</a></li>
+            <li class="nav-item"><a class="nav-link" href="/manager/complaints">Réclamations</a></li>
+          <% } %>
+          <% if (user.roleName === 'admin') { %>
+            <li class="nav-item"><a class="nav-link" href="/admin">Administration</a></li>
+            <li class="nav-item"><a class="nav-link" href="/admin/managers">Chargés</a></li>
+          <% } %>
+          <li class="nav-item">
+            <form action="/logout" method="post" class="d-inline">
+              <button class="btn btn-outline-gold" type="submit">Déconnexion</button>
+            </form>
+          </li>
+        <% } else { %>
+          <li class="nav-item"><a class="nav-link" href="/login">Connexion</a></li>
+          <li class="nav-item"><a class="btn btn-gold" href="/register">Ouvrir un compte</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>

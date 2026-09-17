@@ -1,0 +1,33 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Mes clients</h1>
+<section class="table-panel">
+  <% if (!clients.length) { %>
+    <p class="text-muted mb-0">Aucun client assigné.</p>
+  <% } else { %>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>E-mail</th>
+            <th>Statut</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% clients.forEach(function (item) { %>
+            <tr>
+              <td><%= item.first_name %> <%= item.last_name %></td>
+              <td><%= item.email %></td>
+              <td><%= item.status %></td>
+              <td><a href="/manager/clients/<%= item.id %>">Fiche</a></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
+
+<%- include('../layouts/footer') %>

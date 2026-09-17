@@ -1,0 +1,41 @@
+<%- include('../layouts/header') %>
+
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <article class="form-card">
+      <h1>Ouvrir un compte</h1>
+      <p class="text-muted">Un e-mail de confirmation sera envoyé avant la première connexion.</p>
+      <form action="/register" method="post" novalidate>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="firstName">Prénom</label>
+            <input class="form-control" id="firstName" name="firstName" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="lastName">Nom</label>
+            <input class="form-control" id="lastName" name="lastName" required />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="email">E-mail</label>
+          <input class="form-control" id="email" name="email" type="email" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="phone">Téléphone</label>
+          <input class="form-control" id="phone" name="phone" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="password">Mot de passe</label>
+          <input class="form-control" id="password" name="password" type="password" minlength="8" required />
+        </div>
+        <div class="mb-4">
+          <label class="form-label" for="passwordConfirm">Confirmation</label>
+          <input class="form-control" id="passwordConfirm" name="passwordConfirm" type="password" minlength="8" required />
+        </div>
+        <button class="btn btn-gold w-100" type="submit">Créer mon espace</button>
+      </form>
+    </article>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

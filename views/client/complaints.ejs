@@ -1,0 +1,39 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Réclamations</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <article class="form-card">
+      <h2 class="h4">Nouvelle réclamation</h2>
+      <form action="/complaints" method="post">
+        <div class="mb-3">
+          <label class="form-label" for="subject">Sujet</label>
+          <input class="form-control" id="subject" name="subject" required />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit">Envoyer</button>
+      </form>
+    </article>
+  </div>
+  <div class="col-lg-7">
+    <section class="table-panel">
+      <% if (!complaints.length) { %>
+        <p class="text-muted mb-0">Aucune réclamation.</p>
+      <% } else { %>
+        <% complaints.forEach(function (item) { %>
+          <article class="mb-3">
+            <strong><%= item.subject %></strong>
+            <span class="text-muted"> · <%= item.status %></span>
+            <p class="mb-1"><%= item.message %></p>
+            <% if (item.response) { %><p class="mb-0"><em>Réponse : <%= item.response %></em></p><% } %>
+          </article>
+        <% }) %>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

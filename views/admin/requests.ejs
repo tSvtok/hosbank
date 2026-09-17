@@ -1,0 +1,31 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Toutes les demandes</h1>
+<section class="table-panel">
+  <% if (!requests.length) { %>
+    <p class="text-muted mb-0">Aucune demande.</p>
+  <% } else { %>
+    <% requests.forEach(function (item) { %>
+      <article class="mb-4 pb-3 border-bottom">
+        <h2 class="h5 mb-1"><%= requestTypeLabel[item.type] || item.type %> · <%= item.status %></h2>
+        <p class="text-muted"><%= item.first_name %> <%= item.last_name %> — <%= item.email %></p>
+        <p><%= item.message || '—' %></p>
+        <% if (item.response) { %><p><em>Réponse : <%= item.response %></em></p><% } %>
+        <% if (item.status === 'pending') { %>
+          <form action="/admin/requests/<%= item.id %>" method="post" class="row g-2 align-items-end">
+            <div class="col-md-6">
+              <label class="form-label" for="response-<%= item.id %>">Réponse au client</label>
+              <textarea class="form-control" id="response-<%= item.id %>" name="response" rows="2"></textarea>
+            </div>
+            <div class="col-md-6 d-flex gap-2">
+              <button class="btn btn-gold" type="submit" name="status" value="approved">Accepter</button>
+              <button class="btn btn-outline-gold" type="submit" name="status" value="rejected">Refuser</button>
+            </div>
+          </form>
+        <% } %>
+      </article>
+    <% }) %>
+  <% } %>
+</section>
+
+<%- include('../layouts/footer') %>

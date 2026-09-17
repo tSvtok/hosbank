@@ -1,0 +1,29 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Espace conseiller</h1>
+<div class="row g-4">
+  <div class="col-md-4">
+    <article class="table-panel">
+      <p class="eyebrow">Clients</p>
+      <p class="h2 mb-0"><%= clients.length %></p>
+    </article>
+  </div>
+  <div class="col-md-4">
+    <article class="table-panel">
+      <p class="eyebrow">Demandes en attente</p>
+      <p class="h2 mb-0"><%= requests.length %></p>
+    </article>
+  </div>
+  <div class="col-md-4">
+    <article class="table-panel">
+      <p class="eyebrow">Réclamations ouvertes</p>
+      <p class="h2 mb-0"><%= complaints.length %></p>
+    </article>
+  </div>
+</div>
+<p class="mt-4">
+  <a class="btn btn-gold" href="/manager/clients">Voir mes clients</a>
+  <a class="btn btn-outline-gold" href="/manager/requests">Traiter les demandes</a>
+</p>
+
+<%- include('../layouts/footer') %>

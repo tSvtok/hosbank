@@ -1,0 +1,56 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Demandes clients</h1>
+<form class="row g-2 mb-4" method="get" action="/manager/requests">
+  <div class="col-md-4">
+    <label class="form-label" for="status">Statut</label>
+    <select class="form-select" id="status" name="status">
+      <option value="all" <%= filters.status === 'all' ? 'selected' : '' %>>Tous</option>
+      <option value="pending" <%= filters.status === 'pending' ? 'selected' : '' %>>En attente</option>
+      <option value="approved" <%= filters.status === 'approved' ? 'selected' : '' %>>Acceptées</option>
+      <option value="rejected" <%= filters.status === 'rejected' ? 'selected' : '' %>>Refusées</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <label class="form-label" for="type">Type</label>
+    <select class="form-select" id="type" name="type">
+      <option value="all" <%= filters.type === 'all' ? 'selected' : '' %>>Tous</option>
+      <option value="savings_account" <%= filters.type === 'savings_account' ? 'selected' : '' %>>Livret</option>
+      <option value="new_card" <%= filters.type === 'new_card' ? 'selected' : '' %>>Carte virtuelle</option>
+      <option value="rib" <%= filters.type === 'rib' ? 'selected' : '' %>>RIB</option>
+      <option value="pin_reset" <%= filters.type === 'pin_reset' ? 'selected' : '' %>>PIN</option>
+      <option value="card_opposition" <%= filters.type === 'card_opposition' ? 'selected' : '' %>>Opposition</option>
+    </select>
+  </div>
+  <div class="col-md-4 d-flex align-items-end">
+    <button class="btn btn-gold" type="submit">Filtrer</button>
+  </div>
+</form>
+<section class="table-panel">
+  <% if (!requests.length) { %>
+    <p class="text-muted mb-0">Aucune demande.</p>
+  <% } else { %>
+    <% requests.forEach(function (item) { %>
+      <article class="mb-4 pb-3 border-bottom">
+        <h2 class="h5 mb-1"><%= requestTypeLabel[item.type] || item.type %> · <%= item.status %></h2>
+        <p class="text-muted"><%= item.first_name %> <%= item.last_name %> — <%= item.email %></p>
+        <p><%= item.message || '—' %></p>
+        <% if (item.response) { %><p><em>Réponse : <%= item.response %></em></p><% } %>
+        <% if (item.status === 'pending') { %>
+          <form action="/manager/requests/<%= item.id %>" method="post" class="row g-2 align-items-end">
+            <div class="col-md-6">
+              <label class="form-label" for="response-<%= item.id %>">Réponse au client</label>
+              <textarea class="form-control" id="response-<%= item.id %>" name="response" rows="2"></textarea>
+            </div>
+            <div class="col-md-6 d-flex gap-2">
+              <button class="btn btn-gold" type="submit" name="status" value="approved">Accepter</button>
+              <button class="btn btn-outline-gold" type="submit" name="status" value="rejected">Refuser</button>
+            </div>
+          </form>
+        <% } %>
+      </article>
+    <% }) %>
+  <% } %>
+</section>
+
+<%- include('../layouts/footer') %>

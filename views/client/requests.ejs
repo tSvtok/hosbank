@@ -1,0 +1,65 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Demandes</h1>
+<div class="row g-4">
+  <div class="col-lg-5">
+    <article class="form-card">
+      <h2 class="h4">Nouvelle demande</h2>
+      <form action="/requests" method="post">
+        <div class="mb-3">
+          <label class="form-label" for="type">Type</label>
+          <select class="form-select" id="type" name="type" required>
+            <option value="savings_account">Livret d’épargne</option>
+            <option value="new_card">Carte virtuelle</option>
+            <option value="rib">RIB officiel</option>
+            <option value="pin_reset">Renouvellement PIN</option>
+            <option value="card_opposition">Opposition carte</option>
+          </select>
+        </div>
+        <% if (typeof accounts !== 'undefined' && accounts.length) { %>
+          <div class="mb-3">
+            <label class="form-label" for="relatedAccountId">Compte (pour un RIB)</label>
+            <select class="form-select" id="relatedAccountId" name="relatedAccountId">
+              <% accounts.forEach(function (account) { %>
+                <option value="<%= account.id %>"><%= account.account_number %> — <%= formatRib(account.rib) %></option>
+              <% }) %>
+            </select>
+          </div>
+        <% } %>
+        <% if (typeof cards !== 'undefined' && cards.length) { %>
+          <div class="mb-3">
+            <label class="form-label" for="relatedCardId">Carte (PIN ou opposition)</label>
+            <select class="form-select" id="relatedCardId" name="relatedCardId">
+              <% cards.forEach(function (card) { %>
+                <option value="<%= card.id %>"><%= card.masked %> · <%= card.status %></option>
+              <% }) %>
+            </select>
+          </div>
+        <% } %>
+        <div class="mb-3">
+          <label class="form-label" for="message">Message</label>
+          <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+        </div>
+        <button class="btn btn-gold" type="submit">Envoyer</button>
+      </form>
+    </article>
+  </div>
+  <div class="col-lg-7">
+    <section class="table-panel">
+      <% if (!requests.length) { %>
+        <p class="text-muted mb-0">Aucune demande.</p>
+      <% } else { %>
+        <% requests.forEach(function (item) { %>
+          <article class="mb-3">
+            <strong><%= requestTypeLabel[item.type] || item.type %></strong>
+            <span class="text-muted"> · <%= item.status %> · <%= new Date(item.created_at).toLocaleString('fr-FR') %></span>
+            <% if (item.message) { %><p class="mb-1"><%= item.message %></p><% } %>
+            <% if (item.response) { %><p class="mb-0"><em>Réponse : <%= item.response %></em></p><% } %>
+          </article>
+        <% }) %>
+      <% } %>
+    </section>
+  </div>
+</div>
+
+<%- include('../layouts/footer') %>

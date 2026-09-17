@@ -1,0 +1,40 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Cartes</h1>
+<section class="table-panel">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Carte</th>
+          <th>Expiration</th>
+          <th>Statut</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% cards.forEach(function (card) { %>
+          <tr>
+            <td><%= card.first_name %> <%= card.last_name %></td>
+            <td><%= card.masked %> <%= card.is_virtual ? '(virtuelle)' : '' %></td>
+            <td><%= card.expiry_month %>/<%= card.expiry_year %></td>
+            <td><%= card.status %></td>
+            <td>
+              <form action="/admin/cards/<%= card.id %>/status" method="post" class="d-flex gap-2">
+                <select class="form-select form-select-sm" name="status">
+                  <option value="active" <%= card.status === 'active' ? 'selected' : '' %>>active</option>
+                  <option value="blocked" <%= card.status === 'blocked' ? 'selected' : '' %>>bloquée</option>
+                  <option value="pending" <%= card.status === 'pending' ? 'selected' : '' %>>en attente</option>
+                </select>
+                <button class="btn btn-sm btn-outline-gold" type="submit">OK</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<%- include('../layouts/footer') %>

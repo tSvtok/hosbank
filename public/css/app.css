@@ -1,0 +1,167 @@
+:root {
+  --ink: #0b1f33;
+  --ink-soft: #16324a;
+  --gold: #c4a35a;
+  --gold-dark: #9d7c38;
+  --paper: #f3eee4;
+  --paper-card: #fffdf8;
+  --line: rgba(11, 31, 51, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top right, rgba(196, 163, 90, 0.16), transparent 28%),
+    linear-gradient(180deg, #f7f3ea 0%, var(--paper) 100%);
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+h1,
+h2,
+.navbar-brand {
+  font-family: Fraunces, Georgia, serif;
+}
+
+.gold-bar {
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold), #ead7a5);
+}
+
+.site-header {
+  background: var(--ink);
+  color: #f7f3ea;
+}
+
+.navbar-brand {
+  color: #f7f3ea !important;
+  font-size: 1.55rem;
+  letter-spacing: 0.04em;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(247, 243, 234, 0.82) !important;
+  font-size: 0.92rem;
+}
+
+.navbar-toggler {
+  border-color: var(--gold);
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+.site-main {
+  min-height: calc(100vh - 160px);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  color: var(--gold-dark);
+  font-weight: 700;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.15;
+}
+
+.btn-gold,
+.btn-gold:visited {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.btn-gold:hover,
+.btn-gold:focus {
+  background: var(--gold-dark);
+  border-color: var(--gold-dark);
+  color: #fff;
+}
+
+.btn-outline-gold {
+  border-color: var(--gold);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.btn-outline-gold:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.ledger-card,
+.form-card,
+.balance-card,
+.table-panel {
+  background: var(--paper-card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(11, 31, 51, 0.06);
+}
+
+.ledger-card,
+.form-card,
+.table-panel {
+  padding: 1.6rem;
+}
+
+.ledger-card ul {
+  margin: 1rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.balance-card {
+  padding: 1.4rem 1.5rem;
+  background:
+    linear-gradient(145deg, var(--ink) 0%, var(--ink-soft) 70%),
+    var(--ink);
+  color: #f7f3ea;
+}
+
+.account-number,
+.status {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  opacity: 0.8;
+}
+
+.balance {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 2rem;
+  margin: 0.85rem 0 0.35rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 1.2rem 0 1.6rem;
+  color: #5b6b78;
+  font-size: 0.92rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: 10px;
+  border-color: #d7d0c3;
+  padding: 0.7rem 0.8rem;
+}
+
+.alert {
+  border-radius: 12px;
+}

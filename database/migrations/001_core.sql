@@ -1,0 +1,2 @@
+-- 001 — schéma de base. Le fichier canonique est ../schema.sql
+-- Appliqué au démarrage de l'application (CREATE TABLE IF NOT EXISTS).

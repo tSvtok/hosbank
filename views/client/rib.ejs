@@ -1,0 +1,16 @@
+<%- include('../layouts/header') %>
+
+<p class="eyebrow">Relevé d’identité bancaire</p>
+<h1 class="mb-3"><%= accountTypeLabel[account.type] || account.type %></h1>
+<article class="table-panel mb-4">
+  <p class="mb-1"><strong>Titulaire</strong> <%= user.firstName %> <%= user.lastName %></p>
+  <p class="mb-1"><strong>IBAN / RIB</strong> <%= formatRib(account.rib) %></p>
+  <p class="mb-1"><strong>N° de compte</strong> <%= account.account_number %></p>
+  <p class="mb-0"><strong>Devise</strong> <%= account.currency %></p>
+</article>
+<form action="/accounts/<%= account.id %>/rib" method="post">
+  <button class="btn btn-gold" type="submit">Demander un RIB officiel</button>
+  <a class="btn btn-outline-gold" href="/accounts/<%= account.id %>">Retour</a>
+</form>
+
+<%- include('../layouts/footer') %>

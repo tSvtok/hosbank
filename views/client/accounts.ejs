@@ -1,0 +1,19 @@
+<%- include('../layouts/header') %>
+
+<h1 class="mb-4">Mes comptes</h1>
+<div class="row g-4">
+  <% accounts.forEach(function (account) { %>
+    <div class="col-md-6">
+      <article class="table-panel h-100">
+        <p class="eyebrow"><%= accountTypeLabel[account.type] || account.type %></p>
+        <h2 class="h4"><%= formatMoney(account.balance, account.currency) %></h2>
+        <p class="mb-1">RIB <%= formatRib(account.rib) %></p>
+        <p class="text-muted">N° <%= account.account_number %> · <%= account.status %></p>
+        <a href="/accounts/<%= account.id %>">Voir le détail</a>
+        · <a href="/accounts/<%= account.id %>/rib">RIB</a>
+      </article>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('../layouts/footer') %>
